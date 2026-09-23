@@ -6,6 +6,32 @@ import HXPhotoPicker
 
 @MainActor
 final class MediaPickerTests: XCTestCase {
+    func testOriginalCameraPhotoSaveOptInOnlyChangesEditableSavedStandalonePhotos() {
+        XCTAssertFalse(HXMediaPickerOptions().saveOriginalPhotoBeforeEditing)
+        for source: HXMediaPickerSource in [.library, .camera] {
+            for media: HXMediaPickerMediaType in [.photo, .video] {
+                for editing in [false, true] {
+                    for saving in [false, true] {
+                        for optIn in [false, true] {
+                            let options = HXMediaPickerOptions()
+                            options.source = source
+                            options.mediaType = media
+                            options.allowsEditing = editing
+                            options.saveToPhotoLibrary = saving
+                            options.saveOriginalPhotoBeforeEditing = optIn
+                            let camera = HXMediaPickerConfiguration.camera(options)
+                            let savesOriginal = source == .camera && media == .photo && editing && saving && optIn
+                            XCTAssertEqual(camera.allowsEditing, editing && media == .photo && !savesOriginal)
+                            XCTAssertEqual(camera.isSaveSystemAlbum, saving)
+                            XCTAssertTrue(camera.editor.usesLegacyCropLayout)
+                            XCTAssertFalse(camera.isAutoBack)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private func image(_ size: CGSize, color: UIColor) -> UIImage {
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1

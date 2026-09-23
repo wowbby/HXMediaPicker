@@ -13,13 +13,13 @@ use_frameworks! :linkage => :static
 
 target 'YourApp' do
   pod 'HXPhotoPicker', :git => 'https://github.com/wowbby/HXPhotoPicker.git', :tag => '5.0.6'
-  pod 'HXMediaPicker', :git => 'https://github.com/wowbby/HXMediaPicker.git', :tag => '1.0.0'
+  pod 'HXMediaPicker', :git => 'https://github.com/wowbby/HXMediaPicker.git', :tag => '1.0.1'
 end
 ```
 
 然后运行 `pod install`，使用生成的 `.xcworkspace` 打开工程。
 
-HXMediaPicker `1.0.0` 依赖上述 HXPhotoPicker fork 的 `5.0.6`。该版本提供经典裁剪布局、普通导航控件和预览切换所需的扩展配置。官方 HXPhotoPicker `5.0.5` 缺少这些接口，不能直接替换；仅写 `pod 'HXMediaPicker'` 也无法从 Trunk 安装当前版本。
+HXMediaPicker `1.0.1` 依赖上述 HXPhotoPicker fork 的 `5.0.6`。该版本提供经典裁剪布局、普通导航控件和预览切换所需的扩展配置。官方 HXPhotoPicker `5.0.5` 缺少这些接口，不能直接替换；仅写 `pod 'HXMediaPicker'` 也无法从 Trunk 安装当前版本。
 
 ## Objective-C 调用
 
@@ -86,6 +86,7 @@ HXMediaPicker.present(from: self, options: options) { result, error in
 | `cropOnly` | `false` | 保留的兼容属性；当前可编辑照片统一使用基础裁剪布局，切换此值不会启用其他编辑工具。 |
 | `allowsCamera` | `false` | 在相册列表中显示拍摄入口。 |
 | `saveToPhotoLibrary` | `false` | 将拍摄结果保存到系统相册。 |
+| `saveOriginalPhotoBeforeEditing` | `false` | 独立相机拍照时，配合 `allowsEditing` 和 `saveToPhotoLibrary`，先保存原片再进入裁剪。取消裁剪回到相机，已保存原片保留。 |
 | `minimumVideoDuration` | `0` | 视频最小时长，单位为秒。 |
 | `maximumVideoDuration` | `0` | 视频最大时长，单位为秒；0 表示不设上限。 |
 | `maximumVideoFileSize` | `0` | 相册视频选择的文件大小上限，单位为字节；0 表示不设上限。 |
@@ -142,7 +143,7 @@ options.maximumVideoFileSize = 100 * 1024 * 1024;
 ## 已知限制
 
 - 经典裁剪页支持拖动裁剪框边角调整范围，但尚未实现从裁剪框内部拖动整个框。该布局关闭照片平移和双指缩放。
-- 同时启用拍照编辑与 `saveToPhotoLibrary` 时，保存到相册的是编辑后的裁剪结果；当前接口不提供同时保存未裁剪原片的选项。
+- 默认同时启用拍照编辑与 `saveToPhotoLibrary` 时，保存到相册的是编辑结果。`1.0.1` 起，独立相机可额外设置 `saveOriginalPhotoBeforeEditing = true`，改为保存原片并将编辑结果交给调用方；相册列表中的拍照入口不使用该选项。
 - HXPhotoPicker 在编辑大图前可能执行降采样；即使 `imageTargetSize` 为零，也不能保证编辑结果保留源文件的完整像素尺寸。
 - 相机录制、iCloud 下载、权限交互和具体设备上的裁剪/返回手势需要真机验证。独立测试工程不替代宿主应用的完整流程验收。
 

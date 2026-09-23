@@ -59,6 +59,7 @@ xcodebuild build -workspace HXMediaPickerHarness.xcworkspace \
 - 基础裁剪布局、裁剪输出及安全区内的操作按钮。
 - 预览初始化、返回导航、选中状态保留和取消关闭。
 - 合成短视频的实际导出、源文件保留及中间文件清理。
+- 原片保存成功后的裁剪完成、取消重拍、重复回调和导出文件读取；相机根控制器及资源为测试替身，不实际拍摄或写入相册。
 
 测试使用代码生成的图片和一秒视频，不需要用户相册素材。测试结果应以当前环境的执行输出为准。相机录制、iCloud 下载、权限交互、宿主集成和真机手势体验需要另行验证。
 
@@ -67,3 +68,7 @@ xcodebuild build -workspace HXMediaPickerHarness.xcworkspace \
 ## 1.0.0 发布验证
 
 2026-09-23：以公开 Git tag `wowbby/HXPhotoPicker` `5.0.6` 安装依赖，在 iPhone 17 Pro 模拟器上执行 31 项 XCTest，全部通过；使用 iPhone SDK 的通用 iOS 目标编译通过（未签名、未安装到真机）。其中包括大 JPEG 的加载与实际文件裁剪导出，以及 Live Photo 标签在经典/默认模式之间的切换。
+
+## 1.0.1 发布验证
+
+2026-09-23：同一公开 HXPhotoPicker tag 下，完整 39 项 XCTest 全部通过，通用 iPhone SDK 编译通过（未签名、未安装）。新增验证包括默认关闭的原片保存选项、Objective-C 属性、取消裁剪后重拍、单次回调、宿主直接关闭后的会话释放、全屏覆盖恢复，以及从裁剪导出文件读取完整结果。系统相册实际写入、权限交互和真实相机仍需宿主真机验证。

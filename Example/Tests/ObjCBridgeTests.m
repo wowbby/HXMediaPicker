@@ -16,6 +16,8 @@
     options.cropOnly = YES;
     options.allowsCamera = YES;
     options.saveToPhotoLibrary = NO;
+    XCTAssertFalse(options.saveOriginalPhotoBeforeEditing);
+    options.saveOriginalPhotoBeforeEditing = YES;
     options.minimumVideoDuration = 1;
     options.maximumVideoDuration = 120;
     options.maximumVideoFileSize = 1024 * 1024;

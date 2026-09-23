@@ -1,10 +1,286 @@
 import XCTest
 import UIKit
+import Photos
 @testable import HXPhotoPicker
 @testable import HXMediaPicker
 
+private final class SavedCameraPhoto: PHAsset, @unchecked Sendable {
+    private let identifier = UUID().uuidString
+    override var localIdentifier: String { identifier }
+}
+
+// Exercises the real navigation/editor/session without camera hardware or Photos writes.
+private final class CameraCaptureTestRoot: UIViewController, CameraViewControllerProtocol {
+    weak var delegate: CameraViewControllerDelegate?
+    required init(config: CameraConfiguration, type: CameraController.CaptureType) {
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+}
+
 @MainActor
 final class LegacyCropEditorTests: XCTestCase {
+    private func originalCameraOptions() -> HXMediaPickerOptions {
+        let options = HXMediaPickerOptions()
+        options.source = .camera
+        options.allowsEditing = true
+        options.saveToPhotoLibrary = true
+        options.saveOriginalPhotoBeforeEditing = true
+        return options
+    }
+
+    private func presentCamera(_ session: HXMediaPickerSession, options: HXMediaPickerOptions) throws -> CameraController {
+        var config = HXMediaPickerConfiguration.camera(options)
+        config.cameraViewController = CameraCaptureTestRoot.self
+        let camera = HXMediaPickerCameraController(config: config, type: .photo)
+        session.configureCamera(camera)
+        let window = try XCTUnwrap(UIApplication.shared.windows.first(where: \.isKeyWindow))
+        let presenter = try XCTUnwrap(window.rootViewController)
+        XCTAssertNil(presenter.presentedViewController)
+        presenter.present(camera, animated: false)
+        return camera
+    }
+
+    private func cameraFixture() -> UIImage {
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        return UIGraphicsImageRenderer(size: CGSize(width: 2400, height: 1800), format: format).image {
+            UIColor.red.setFill()
+            $0.fill(CGRect(x: 0, y: 0, width: 1200, height: 1800))
+            UIColor.blue.setFill()
+            $0.fill(CGRect(x: 1200, y: 0, width: 1200, height: 1800))
+        }
+    }
+
+    private func loadedCameraEditor(_ camera: CameraController) throws -> EditorViewController {
+        let editor = try XCTUnwrap(camera.topViewController as? EditorViewController)
+        let cropView = try XCTUnwrap(descendants(editor.view).compactMap { $0 as? EditorView }.first)
+        let loaded = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            cropView.image != nil && cropView.state == .edit
+        }, object: nil)
+        wait(for: [loaded], timeout: 10)
+        editor.view.layoutIfNeeded()
+        return editor
+    }
+
+    func testCameraWithoutOriginalSaveOptInKeepsExistingCompletionBehavior() throws {
+        let options = originalCameraOptions()
+        options.saveOriginalPhotoBeforeEditing = false
+        let original = cameraFixture()
+        let completed = expectation(description: "existing camera completion")
+        completed.assertForOverFulfill = true
+        let session = HXMediaPickerSession(options: options, completion: { result, error in
+            XCTAssertNil(error)
+            XCTAssertTrue(result?.images.first === original)
+            XCTAssertEqual(result?.isOriginal, true)
+            completed.fulfill()
+        }, cancel: { XCTFail("Existing completion must still succeed") })
+        let camera = try presentCamera(session, options: options)
+        XCTAssertTrue(camera.config.allowsEditing)
+        camera.completion?(.image(original), nil, nil)
+        camera.completion?(.image(original), nil, nil)
+        wait(for: [completed], timeout: 5)
+        XCTAssertEqual(camera.viewControllers.count, 1)
+        withExtendedLifetime(session) {}
+    }
+
+    func testSavedCameraPhotoEditCancelReturnsToCaptureAndIgnoresDuplicateCaptureCallbacks() throws {
+        let options = originalCameraOptions()
+        var cancels = 0
+        let cancelled = expectation(description: "whole camera cancelled once")
+        cancelled.assertForOverFulfill = true
+        let session = HXMediaPickerSession(options: options, completion: { _, _ in
+            XCTFail("Cancelling the editor must not finish the request")
+        }, cancel: { cancels += 1; cancelled.fulfill() })
+        let camera = try presentCamera(session, options: options)
+        let root = try XCTUnwrap(camera.viewControllers.first)
+        let original = cameraFixture()
+        let saved = SavedCameraPhoto()
+        camera.completion?(.image(original), nil, nil)
+        XCTAssertTrue(camera.topViewController === root, "Do not edit without a successful original save")
+        camera.cameraViewController(try XCTUnwrap(root as? CameraViewControllerProtocol),
+                                    didFinishWithResult: .image(original), phAsset: saved, location: nil)
+        let editor = try loadedCameraEditor(camera)
+        XCTAssertTrue(editor.config.usesLegacyCropLayout)
+        XCTAssertFalse(editor.config.isAutoBack)
+        XCTAssertEqual(editor.config.legacyCropFinishTitle, "选择")
+        XCTAssertEqual(camera.viewControllers.count, 2)
+        camera.completion?(.image(original), saved, nil)
+        XCTAssertTrue(camera.topViewController === editor)
+        try button("cancel", in: editor).sendActions(for: .touchUpInside)
+        XCTAssertTrue(camera.topViewController === root)
+        XCTAssertEqual(cancels, 0)
+        camera.completion?(.image(original), saved, nil)
+        camera.completion?(.image(original), SavedCameraPhoto(), nil)
+        XCTAssertTrue(camera.topViewController === root, "A delayed duplicate must not reopen an already-cancelled edit")
+        camera.completion?(.image(cameraFixture()), SavedCameraPhoto(), nil)
+        let next = try loadedCameraEditor(camera)
+        XCTAssertFalse(next === editor)
+        try button("cancel", in: next).sendActions(for: .touchUpInside)
+        camera.cameraViewController(didCancel: try XCTUnwrap(root as? CameraViewControllerProtocol))
+        camera.cancelHandler?(camera)
+        wait(for: [cancelled], timeout: 5)
+        XCTAssertEqual(cancels, 1)
+        withExtendedLifetime(session) {}
+    }
+
+    private func assertHostDismissReleasesSavedPhotoSession(afterCancellingEditor: Bool) throws {
+        let options = originalCameraOptions()
+        var events: [String] = []
+        let cancelled = expectation(description: "host dismissal releases camera session")
+        cancelled.assertForOverFulfill = true
+        let session = HXMediaPickerSession(options: options, completion: { _, _ in
+            XCTFail("Host dismissal is cancellation")
+        }, cancel: { events.append("cancel"); cancelled.fulfill() })
+        // The public entry point installs its active = nil closure here.
+        session.release = { events.append("release") }
+        let camera = try presentCamera(session, options: options)
+        let host = try XCTUnwrap(camera.presentingViewController)
+        let root = try XCTUnwrap(camera.viewControllers.first as? CameraViewControllerProtocol)
+        camera.cameraViewController(root, didFinishWithResult: .image(cameraFixture()),
+                                    phAsset: SavedCameraPhoto(), location: nil)
+        XCTAssertTrue(camera.isDismissed, "Reproduce HX's completed flag before continuing our session")
+        let editor = try loadedCameraEditor(camera)
+        if afterCancellingEditor {
+            try button("cancel", in: editor).sendActions(for: .touchUpInside)
+            XCTAssertTrue(camera.topViewController === root)
+        }
+        XCTAssertTrue(events.isEmpty)
+        host.dismiss(animated: false) { events.append("hostDismissed") }
+        wait(for: [cancelled], timeout: 5)
+        XCTAssertEqual(events, ["hostDismissed", "release", "cancel"])
+        XCTAssertNil(host.presentedViewController)
+        XCTAssertNil(session.release)
+        camera.cancelHandler?(camera)
+        XCTAssertEqual(events, ["hostDismissed", "release", "cancel"])
+        withExtendedLifetime(session) {}
+    }
+
+    func testHostDismissDuringSavedPhotoEditingReleasesTheSessionOnce() throws {
+        try assertHostDismissReleasesSavedPhotoSession(afterCancellingEditor: false)
+    }
+
+    func testHostDismissAfterCancellingSavedPhotoEditingReleasesTheSessionOnce() throws {
+        try assertHostDismissReleasesSavedPhotoSession(afterCancellingEditor: true)
+    }
+
+    func testFullScreenCoverOfSavedPhotoEditorDoesNotEndTheCameraSession() throws {
+        let options = originalCameraOptions()
+        var releases = 0
+        var cancels = 0
+        let cancelled = expectation(description: "only real dismissal cancels")
+        cancelled.assertForOverFulfill = true
+        let session = HXMediaPickerSession(options: options, completion: { _, _ in
+            XCTFail("Covering the editor must not complete")
+        }, cancel: { cancels += 1; cancelled.fulfill() })
+        session.release = { releases += 1 }
+        let camera = try presentCamera(session, options: options)
+        let host = try XCTUnwrap(camera.presentingViewController)
+        let root = try XCTUnwrap(camera.viewControllers.first as? CameraViewControllerProtocol)
+        camera.cameraViewController(root, didFinishWithResult: .image(cameraFixture()),
+                                    phAsset: SavedCameraPhoto(), location: nil)
+        let editor = try loadedCameraEditor(camera)
+        let cover = UIViewController()
+        cover.modalPresentationStyle = .fullScreen
+        let covered = expectation(description: "full-screen cover applied")
+        camera.present(cover, animated: false) { covered.fulfill() }
+        wait(for: [covered], timeout: 5)
+        XCTAssertNil(camera.view.window)
+        XCTAssertNotNil(camera.presentingViewController)
+        XCTAssertTrue(camera.presentedViewController === cover)
+        XCTAssertEqual(cancels, 0)
+        XCTAssertEqual(releases, 0)
+        let uncovered = expectation(description: "full-screen cover dismissed")
+        cover.dismiss(animated: false) { uncovered.fulfill() }
+        wait(for: [uncovered], timeout: 5)
+        XCTAssertTrue(camera.topViewController === editor)
+        XCTAssertNotNil(camera.view.window)
+        XCTAssertEqual(cancels, 0)
+        XCTAssertEqual(releases, 0)
+        host.dismiss(animated: false)
+        wait(for: [cancelled], timeout: 5)
+        XCTAssertEqual(cancels, 1)
+        XCTAssertEqual(releases, 1)
+        withExtendedLifetime(session) {}
+    }
+
+    func testSavedCameraPhotoRealCropReturnsExportedFileInsteadOfThumbnailOnceAfterDismissal() throws {
+        let options = originalCameraOptions()
+        var events: [String] = []
+        var exportURL: URL?
+        var thumbnailWidth = 0
+        var returnedImage: UIImage?
+        let completed = expectation(description: "real camera crop delivered once")
+        completed.assertForOverFulfill = true
+        options.didDismiss = { events.append("didDismiss") }
+        let session = HXMediaPickerSession(options: options, completion: { result, error in
+            XCTAssertTrue(Thread.isMainThread)
+            XCTAssertNil(error)
+            returnedImage = result?.images.first
+            events.append("completion")
+            completed.fulfill()
+        }, cancel: { XCTFail("Crop completion must not cancel") })
+        let camera = try presentCamera(session, options: options)
+        session.dismiss = { callback in
+            events.append("dismiss")
+            camera.dismiss(animated: false, completion: callback)
+        }
+        let original = cameraFixture()
+        let saved = SavedCameraPhoto()
+        let root = try XCTUnwrap(camera.viewControllers.first as? CameraViewControllerProtocol)
+        camera.cameraViewController(root, didFinishWithResult: .image(original), phAsset: saved, location: nil)
+        let editor = try loadedCameraEditor(camera)
+        let handler = try XCTUnwrap(editor.finishHandler)
+        editor.finishHandler = { asset, controller in
+            exportURL = asset.result?.url
+            thumbnailWidth = asset.result?.image?.cgImage?.width ?? 0
+            handler(asset, controller)
+            handler(asset, controller)
+            camera.cancelHandler?(camera)
+        }
+        let cropView = try XCTUnwrap(descendants(editor.view).compactMap { $0 as? EditorView }.first)
+        cropView.isFixedRatio = true
+        cropView.setAspectRatio(CGSize(width: 1, height: 1), animated: false)
+        try button("finish", in: editor).sendActions(for: .touchUpInside)
+        wait(for: [completed], timeout: 15)
+        let file = try XCTUnwrap(exportURL)
+        defer { try? FileManager.default.removeItem(at: file) }
+        let exported = try XCTUnwrap(UIImage(contentsOfFile: file.path)?.cgImage)
+        let delivered = try XCTUnwrap(returnedImage?.cgImage)
+        XCTAssertEqual(delivered.width, exported.width)
+        XCTAssertEqual(delivered.height, exported.height)
+        XCTAssertEqual(delivered.width, delivered.height)
+        XCTAssertGreaterThan(delivered.width, thumbnailWidth)
+        XCTAssertGreaterThan(delivered.width, 1000)
+        XCTAssertEqual(events, ["dismiss", "didDismiss", "completion"])
+        XCTAssertNil(camera.presentingViewController)
+        withExtendedLifetime(session) {}
+    }
+
+    func testSavedCameraPhotoMissingEditorExportFailsOnceWithoutReturningOriginalOrThumbnail() throws {
+        let options = originalCameraOptions()
+        let failed = expectation(description: "missing export error once")
+        failed.assertForOverFulfill = true
+        let session = HXMediaPickerSession(options: options, completion: { result, error in
+            XCTAssertNil(result)
+            XCTAssertEqual(error?.code, 5)
+            failed.fulfill()
+        }, cancel: { XCTFail("A missing edit export is an error") })
+        let camera = try presentCamera(session, options: options)
+        let original = cameraFixture()
+        camera.completion?(.image(original), SavedCameraPhoto(), nil)
+        let editor = try loadedCameraEditor(camera)
+        let missing = ImageEditedResult(image: original,
+            urlConfig: EditorURLConfig(fileName: "missing-\(UUID().uuidString).jpg", type: .temp),
+            imageType: .normal, data: nil)
+        let asset = EditorAsset(type: .image(original), result: .image(missing, .init(cropSize: nil)))
+        editor.finishHandler?(asset, editor)
+        editor.finishHandler?(asset, editor)
+        camera.cancelHandler?(camera)
+        wait(for: [failed], timeout: 5)
+        withExtendedLifetime(session) {}
+    }
+
     private func descendants(_ view: UIView) -> [UIView] {
         [view] + view.subviews.flatMap(descendants)
     }

@@ -17,6 +17,10 @@ import HXPhotoPicker
     public var cropOnly = false
     public var allowsCamera = false
     public var saveToPhotoLibrary = false
+    /// For an editable standalone camera photo, save the original before opening
+    /// the editor. Cancelling editing returns to the camera and keeps that photo.
+    /// Requires source == .camera, mediaType == .photo, allowsEditing and saveToPhotoLibrary.
+    public var saveOriginalPhotoBeforeEditing = false
     public var minimumVideoDuration: Int = 0
     public var maximumVideoDuration: Int = 0
     /// Bytes; zero means unlimited.
@@ -48,6 +52,11 @@ import HXPhotoPicker
 // Start from the official Moments preset, then apply the classic appearance
 // and media policies; the preset also changes video behavior and fixed colors.
 enum HXMediaPickerConfiguration {
+    static func savesOriginalPhotoBeforeEditing(_ options: HXMediaPickerOptions) -> Bool {
+        options.saveOriginalPhotoBeforeEditing && options.source == .camera &&
+            options.mediaType == .photo && options.allowsEditing && options.saveToPhotoLibrary
+    }
+
     static func picker(_ options: HXMediaPickerOptions) -> PickerConfiguration {
         var config = PhotoTools.getWXPickerConfig(isMoment: true)
         restoreAdaptiveAppearance(to: &config)
@@ -177,7 +186,8 @@ enum HXMediaPickerConfiguration {
         config.modalPresentationStyle = .fullScreen
         config.isSaveSystemAlbum = options.saveToPhotoLibrary
         config.allowLocation = false
-        config.allowsEditing = options.allowsEditing && options.mediaType == .photo
+        config.allowsEditing = options.allowsEditing && options.mediaType == .photo &&
+            !savesOriginalPhotoBeforeEditing(options)
         config.editor = editor(options, multipleSelection: false)
         config.tintColor = options.themeColor
         config.videoMinimumDuration = TimeInterval(max(0, options.minimumVideoDuration))

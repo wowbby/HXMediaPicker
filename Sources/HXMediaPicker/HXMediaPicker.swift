@@ -32,6 +32,32 @@ import HXPhotoPicker
     }
 }
 
+// HX considers a camera complete once it delivers the saved original. Our editor
+// can keep that camera session open, so observe its actual presentation lifetime
+// independently of HX's internal completion flag.
+final class HXMediaPickerCameraController: CameraController {
+    private var appearedWhilePresented = false
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if presentingViewController != nil { appearedWhilePresented = true }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        let wasDismissed = appearedWhilePresented &&
+            (isBeingDismissed || presentingViewController == nil)
+        super.viewDidDisappear(animated)
+        guard wasDismissed else { return }
+        appearedWhilePresented = false
+        // Let the host's dismissal finish before releasing the session/notifying
+        // the caller. A full-screen cover keeps presentingViewController intact.
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, self.presentingViewController == nil else { return }
+            self.cancelHandler?(self)
+        }
+    }
+}
+
 // Owns presentation and asynchronous conversion until exactly one terminal callback.
 // Internal visibility permits lifecycle/error-path tests without Photo Library permission.
 final class HXMediaPickerSession {
@@ -44,6 +70,11 @@ final class HXMediaPickerSession {
     private var didPresent = false
     private var exportSession: AVAssetExportSession?
     private var loadingView: UIView?
+    private var cameraEditor: EditorViewController?
+    private var handledCameraAssetIdentifiers: Set<String> = []
+    // Weak identity tracking rejects a delayed duplicate without retaining every
+    // full-resolution original when the user cancels editing and takes another photo.
+    private let handledCameraImages = NSHashTable<UIImage>(options: [.weakMemory, .objectPointerPersonality])
     var release: (() -> Void)?
     // An injectable dismissal operation also verifies callback ordering without UI animation.
     var dismiss: ((@escaping () -> Void) -> Void)?
@@ -70,25 +101,9 @@ final class HXMediaPickerSession {
                 finish(error: Self.error(3, "当前设备无法使用相机"))
                 return
             }
-            let camera = CameraController(config: HXMediaPickerConfiguration.camera(options),
-                                          type: options.mediaType == .photo ? .photo : .video)
-            camera.completion = { [weak self] result, _, _ in
-                Self.onMain {
-                    guard let self = self, self.beginProcessing() else { return }
-                    switch result {
-                    case .image(let image):
-                        self.finish(result: .init(images: [image], isOriginal: true))
-                    case .video(let url):
-                        self.exportVideo(url) { result in
-                            // This URL is the bridge-owned camera recording, never a PHAsset URL.
-                            try? FileManager.default.removeItem(at: url)
-                            self.finishVideo(result)
-                        }
-                    }
-                }
-            }
-            camera.cancelHandler = { [weak self] _ in self?.cancelSelection() }
-            controller = camera
+            let camera = HXMediaPickerCameraController(config: HXMediaPickerConfiguration.camera(options),
+                                                       type: options.mediaType == .photo ? .photo : .video)
+            configureCamera(camera)
         } else {
             let picker = PhotoPickerController(config: HXMediaPickerConfiguration.picker(options))
             picker.autoDismiss = false
@@ -109,6 +124,82 @@ final class HXMediaPickerSession {
         options.willPresent?()
         didPresent = true
         presenter.present(controller, animated: true)
+    }
+
+    // Internal so tests can supply a camera root without starting hardware capture.
+    func configureCamera(_ camera: CameraController) {
+        controller = camera
+        let editsSavedOriginal = HXMediaPickerConfiguration.savesOriginalPhotoBeforeEditing(options)
+        camera.completion = { [weak self, weak camera] result, asset, _ in
+            Self.onMain {
+                guard let self = self, let camera = camera,
+                      self.controller === camera, !self.finished else { return }
+                if case .image(let image) = result, editsSavedOriginal {
+                    self.editSavedCameraPhoto(image, asset: asset, camera: camera)
+                    return
+                }
+                guard self.beginProcessing() else { return }
+                switch result {
+                case .image(let image):
+                    self.finish(result: .init(images: [image], isOriginal: true))
+                case .video(let url):
+                    self.exportVideo(url) { result in
+                        // This URL is the bridge-owned camera recording, never a PHAsset URL.
+                        try? FileManager.default.removeItem(at: url)
+                        self.finishVideo(result)
+                    }
+                }
+            }
+        }
+        camera.cancelHandler = { [weak self] _ in self?.cancelSelection() }
+    }
+
+    private func editSavedCameraPhoto(_ image: UIImage, asset: PHAsset?, camera: CameraController) {
+        // HX calls completion only after its save succeeds. Keep its existing save
+        // failure UI/retry behavior, and never edit or save a second time here.
+        guard let asset = asset, !processing, cameraEditor == nil,
+              !handledCameraAssetIdentifiers.contains(asset.localIdentifier),
+              !handledCameraImages.contains(image),
+              let cameraRoot = camera.viewControllers.first else { return }
+        handledCameraAssetIdentifiers.insert(asset.localIdentifier)
+        handledCameraImages.add(image)
+        var config = camera.config.editor
+        config.isAutoBack = false
+        let editor = EditorViewController(EditorAsset(type: .image(image)), config: config)
+        cameraEditor = editor
+        editor.finishHandler = { [weak self] asset, editor in
+            Self.onMain {
+                guard let self = self, self.cameraEditor === editor,
+                      self.beginProcessing() else { return }
+                let image: UIImage?
+                switch asset.result {
+                case .image(let result, _):
+                    // The editor's image field is only a preview. Deliver the actual
+                    // export, preserving the caller's existing compression policy.
+                    image = UIImage(contentsOfFile: result.url.path)
+                case nil:
+                    image = asset.type.image
+                default:
+                    image = nil
+                }
+                guard let image = image else {
+                    self.finish(error: Self.error(5, "图片读取失败，请重试"))
+                    return
+                }
+                self.finish(result: .init(images: [image], isOriginal: true))
+            }
+        }
+        editor.cancelHandler = { [weak self, weak camera] editor in
+            Self.onMain {
+                guard let self = self, let camera = camera, !self.finished,
+                      !self.processing, self.cameraEditor === editor else { return }
+                self.cameraEditor = nil
+                camera.popToRootViewController(animated: false)
+            }
+        }
+        // Remove the already-confirmed capture preview. Editor cancellation must
+        // return to a fresh capture, not offer a second save of this same photo.
+        camera.setViewControllers([cameraRoot, editor], animated: false)
     }
 
     private func beginProcessing() -> Bool {
@@ -286,6 +377,7 @@ final class HXMediaPickerSession {
     func finish(result: HXMediaPickerResult? = nil, error: NSError? = nil) {
         guard !finished else { return }
         finished = true
+        cameraEditor = nil
         loadingView?.removeFromSuperview()
         loadingView = nil
         let deliver = {
