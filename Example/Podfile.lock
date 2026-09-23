@@ -1,5 +1,5 @@
 PODS:
-  - HXMediaPicker (1.0.1):
+  - HXMediaPicker (1.0.2):
     - HXPhotoPicker (= 5.0.6)
   - HXPhotoPicker (5.0.6):
     - HXPhotoPicker/Default (= 5.0.6)
@@ -41,7 +41,7 @@ CHECKOUT OPTIONS:
     :tag: 5.0.6
 
 SPEC CHECKSUMS:
-  HXMediaPicker: e0958deaaa8560a759aadf40b0366c280bfe140f
+  HXMediaPicker: 9a52188725cfc2f2c39f27084964379d30df6ec6
   HXPhotoPicker: 3abfbb0b48e39e7278851733f2d88f2b690cd52a
 
 PODFILE CHECKSUM: b28cbd726282477ff254b397e76594fdd071a53d

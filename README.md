@@ -13,13 +13,13 @@ use_frameworks! :linkage => :static
 
 target 'YourApp' do
   pod 'HXPhotoPicker', :git => 'https://github.com/wowbby/HXPhotoPicker.git', :tag => '5.0.6'
-  pod 'HXMediaPicker', :git => 'https://github.com/wowbby/HXMediaPicker.git', :tag => '1.0.1'
+  pod 'HXMediaPicker', :git => 'https://github.com/wowbby/HXMediaPicker.git', :tag => '1.0.2'
 end
 ```
 
 然后运行 `pod install`，使用生成的 `.xcworkspace` 打开工程。
 
-HXMediaPicker `1.0.1` 依赖上述 HXPhotoPicker fork 的 `5.0.6`。该版本提供经典裁剪布局、普通导航控件和预览切换所需的扩展配置。官方 HXPhotoPicker `5.0.5` 缺少这些接口，不能直接替换；仅写 `pod 'HXMediaPicker'` 也无法从 Trunk 安装当前版本。
+HXMediaPicker `1.0.2` 依赖上述 HXPhotoPicker fork 的 `5.0.6`。该版本提供经典裁剪布局、普通导航控件和预览切换所需的扩展配置。官方 HXPhotoPicker `5.0.5` 缺少这些接口，不能直接替换；仅写 `pod 'HXMediaPicker'` 也无法从 Trunk 安装当前版本。
 
 ## Objective-C 调用
 
@@ -125,7 +125,7 @@ options.maximumVideoFileSize = 100 * 1024 * 1024;
 
 选择页和预览页使用普通导航控件与安全区布局。选择页浅色模式采用白色页面、浅灰底栏和中性文字，深色模式使用对应的深色配色。预览和裁剪编辑区保持黑色，预览导航及工具栏文字为白色；返回列表时恢复列表主题。`themeColor` 修改选中状态的主色。
 
-在宿主启动时统一设置选择页主题，所有未单独覆盖的相册请求都会使用它：
+`1.0.2` 起可在宿主启动时统一设置选择页主题，所有未单独覆盖的相册请求都会使用它：
 
 ```objc
 // Automatic / Light / Dark；默认 Automatic。
