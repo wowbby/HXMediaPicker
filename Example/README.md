@@ -41,6 +41,10 @@ xcodebuild test -workspace HXMediaPickerHarness.xcworkspace \
 
 安全区相关断言需要使用带 Home 指示条的 iPhone 模拟器。示例不固定 `UIUserInterfaceStyle`，以便检查自动、浅色和深色外观配置。
 
+示例通过 `App/Info.plist` 使用应用管理状态栏（`UIViewControllerBasedStatusBarAppearance=false`），用于验证预览黑色主题、自动主题变化，以及宿主关闭时先恢复状态栏再交付回调的顺序。若改为控制器管理状态栏，对应的两项专项测试会跳过。
+
+2026-09-23：此配置下 45 项测试通过、无跳过；控制器管理状态栏的配置已通过原有 43 项测试。自动化结果不替代真机业务入口的预览返回、侧滑返回和裁剪手势验收。
+
 仅检查真机 SDK 编译、不签名和安装：
 
 ```sh

@@ -5,6 +5,32 @@
 @end
 
 @implementation ObjCBridgeTests
+- (void)testGlobalAppearanceSetterKeepsExplicitOptionsAndCameraIndependent {
+    HXMediaPickerAppearance savedAppearance = [HXMediaPicker defaultAppearance];
+    @try {
+        HXMediaPickerOptions *inherited = [[HXMediaPickerOptions alloc] init];
+        [HXMediaPicker setDefaultAppearance:HXMediaPickerAppearanceDark];
+        XCTAssertEqual([HXMediaPicker defaultAppearance], HXMediaPickerAppearanceDark);
+        XCTAssertEqual(inherited.appearance, HXMediaPickerAppearanceDark);
+
+        HXMediaPickerOptions *explicit = [[HXMediaPickerOptions alloc] init];
+        explicit.appearance = HXMediaPickerAppearanceAutomatic;
+        XCTAssertEqual(explicit.appearance, HXMediaPickerAppearanceAutomatic);
+        XCTAssertEqual([HXMediaPicker defaultAppearance], HXMediaPickerAppearanceDark);
+        inherited.source = HXMediaPickerSourceCamera;
+        XCTAssertEqual(inherited.appearance, HXMediaPickerAppearanceAutomatic);
+        inherited.appearance = HXMediaPickerAppearanceLight;
+        XCTAssertEqual(inherited.appearance, HXMediaPickerAppearanceLight);
+
+        [HXMediaPicker setDefaultAppearance:HXMediaPickerAppearanceLight];
+        XCTAssertEqual([[HXMediaPickerOptions alloc] init].appearance, HXMediaPickerAppearanceLight);
+        XCTAssertEqual(explicit.appearance, HXMediaPickerAppearanceAutomatic);
+    } @finally {
+        [HXMediaPicker setDefaultAppearance:savedAppearance];
+    }
+    XCTAssertEqual([HXMediaPicker defaultAppearance], savedAppearance);
+}
+
 - (void)testAllOptionsAndObjectiveCSelectorReportInvalidPresenterOnMainThread {
     HXMediaPickerOptions *options = [[HXMediaPickerOptions alloc] init];
     options.source = HXMediaPickerSourceLibrary;

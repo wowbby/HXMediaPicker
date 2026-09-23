@@ -91,7 +91,7 @@ HXMediaPicker.present(from: self, options: options) { result, error in
 | `maximumVideoDuration` | `0` | 视频最大时长，单位为秒；0 表示不设上限。 |
 | `maximumVideoFileSize` | `0` | 相册视频选择的文件大小上限，单位为字节；0 表示不设上限。 |
 | `imageTargetSize` | `.zero` | 指定图片读取的目标尺寸；设置时保持比例，适配层的本地缩放不会放大小图。 |
-| `appearance` | `.automatic` | 跟随宿主的有效外观，或指定 `.light` / `.dark`。 |
+| `appearance` | 全局默认值 | 相册选择默认使用 `HXMediaPicker.defaultAppearance`；单次可指定 `.automatic` / `.light` / `.dark` 覆盖。独立相机默认仍为 `.automatic`。 |
 | `themeColor` | `#07C160` | 选择标记、完成按钮等选中状态的主色。 |
 | `willPresent` | `nil` | 即将呈现选择器时调用。 |
 | `didDismiss` | `nil` | 选择器关闭后、结果或取消回调前调用。 |
@@ -123,7 +123,16 @@ options.maximumVideoFileSize = 100 * 1024 * 1024;
 
 相册从最近项目开始，可通过标题切换相册。选择圈显示序号，左上角取消直接关闭选择器。预览采用系统导航的 push/pop 切换，返回后保留选择状态和列表位置；预览底部显示已选图片缩略图。
 
-选择页和预览页使用普通导航控件与安全区布局。浅色模式采用白色页面、浅灰底栏和中性文字，深色模式使用对应的深色配色。`themeColor` 修改选中状态的主色。自动外观跟随宿主；宿主若固定浅色，自动模式也保持浅色。相机和裁剪编辑区使用各自的深色界面。
+选择页和预览页使用普通导航控件与安全区布局。选择页浅色模式采用白色页面、浅灰底栏和中性文字，深色模式使用对应的深色配色。预览和裁剪编辑区保持黑色，预览导航及工具栏文字为白色；返回列表时恢复列表主题。`themeColor` 修改选中状态的主色。
+
+在宿主启动时统一设置选择页主题，所有未单独覆盖的相册请求都会使用它：
+
+```objc
+// Automatic / Light / Dark；默认 Automatic。
+[HXMediaPicker setDefaultAppearance:HXMediaPickerAppearanceLight];
+```
+
+Swift 写法为 `HXMediaPicker.defaultAppearance = .light`。单次请求可用 `options.appearance` 覆盖全局设置，显式 `.automatic` 也会覆盖全局浅色或深色。自动外观跟随宿主的有效主题；宿主若在 Info.plist 固定为浅色，自动模式也保持浅色。全局开关不改变独立相机请求的默认外观。
 
 开启 `allowsEditing` 后，照片使用经典基础裁剪布局：还原、左旋转、比例选择和确认。默认不提供涂鸦、贴纸、滤镜、镜像或角度尺。裁剪比例包括原始比例、1:1、2:3、3:4、9:16 和 16:9。单选可不修改直接确认；多选的裁剪页需要修改后才能确认。未开启编辑或选择视频时，预览页隐藏编辑按钮。
 

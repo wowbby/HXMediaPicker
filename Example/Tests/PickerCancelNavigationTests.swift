@@ -283,6 +283,14 @@ final class PickerCancelNavigationTests: XCTestCase {
         let background = try XCTUnwrap(preview.view.backgroundColor,
                                        "UIKit page navigation cannot rely on the custom zoom animator to set a background")
         XCTAssertEqual(background.resolvedColor(with: preview.traitCollection).cgColor.alpha, 1, accuracy: 0.01)
+        XCTAssertEqual(background, .black)
+        XCTAssertEqual(preview.navigationItem.standardAppearance?.backgroundColor, .black)
+        XCTAssertNil(preview.navigationItem.standardAppearance?.backgroundEffect)
+        if #available(iOS 26.0, *) {
+            XCTAssertEqual(preview.navigationItem.leftBarButtonItem?.tintColor, .white)
+        }
+        XCTAssertEqual(preview.preferredStatusBarStyle, .lightContent)
+        XCTAssertEqual(picker.preferredStatusBarStyle, .lightContent)
         XCTAssertEqual(preview.view.alpha, 1, accuracy: 0.01)
         XCTAssertFalse(preview.view.gestureRecognizers?.contains { $0 is UIPanGestureRecognizer } ?? false,
                        "The old full-screen drag-to-shrink gesture must not compete with UIKit navigation")
@@ -315,7 +323,7 @@ final class PickerCancelNavigationTests: XCTestCase {
         }
         let selectedAsset = PhotoAsset(image: image)
         selectedAsset.isSelected = true
-        let picker = PhotoPickerController(config: config)
+        let picker = HXMediaPickerController(config: config)
         // Disabled system-library loading still asynchronously refreshes local assets.
         // Register the fixture in both lists, as a real selected local photo would be.
         picker.localAssetArray = [selectedAsset]
@@ -431,6 +439,7 @@ final class PickerCancelNavigationTests: XCTestCase {
             .first { $0.currentTitle == editTitle })
         XCTAssertEqual(editButton.isHidden, !visitsEditor,
                        "The preview Edit button must follow the app's editing permission")
+        XCTAssertEqual(editButton.titleColor(for: .normal), .white)
 
         if usesSystemNavigationTransition {
             try assertSystemPageNavigation(preview, grid: grid, picker: picker)
@@ -534,6 +543,11 @@ final class PickerCancelNavigationTests: XCTestCase {
         }
         XCTAssertTrue(presenter.presentedViewController === picker)
         XCTAssertTrue(picker.topViewController === grid)
+        XCTAssertNil(grid.navigationItem.standardAppearance,
+                     "The preview's black navigation appearance must not leak into the grid")
+        XCTAssertEqual(picker.config.statusBarStyle, config.statusBarStyle)
+        XCTAssertEqual(picker.navigationBar.standardAppearance.backgroundColor,
+                       appearance == .dark ? config.navigationViewBackgroudDarkColor : config.navigationViewBackgroundColor)
         XCTAssertEqual(picker.viewControllers.count, 1)
         XCTAssertEqual(picker.selectedAssetArray.count, 1)
         XCTAssertTrue(picker.selectedAssetArray.first === selectedAsset)

@@ -4,6 +4,10 @@ import Photos
 import HXPhotoPicker
 
 @objcMembers public final class HXMediaPicker: NSObject {
+    /// Default appearance for library selection. Set once in the host at startup.
+    /// Preview/editing stay dark; an explicit per-request appearance takes priority.
+    public static var defaultAppearance: HXMediaPickerAppearance = .automatic
+
     // HXPhotoPicker stores appearance/selection resources globally. Serialize presentation
     // so a second bridge request cannot change an already visible picker's configuration.
     private static var active: HXMediaPickerSession?
@@ -105,7 +109,7 @@ final class HXMediaPickerSession {
                                                        type: options.mediaType == .photo ? .photo : .video)
             configureCamera(camera)
         } else {
-            let picker = PhotoPickerController(config: HXMediaPickerConfiguration.picker(options))
+            let picker = HXMediaPickerController(config: HXMediaPickerConfiguration.picker(options))
             picker.autoDismiss = false
             picker.finishHandler = { [weak self] result, _ in
                 Self.onMain { self?.resolve(assets: result.photoAssets, isOriginal: result.isOriginal) }
@@ -381,6 +385,7 @@ final class HXMediaPickerSession {
         loadingView?.removeFromSuperview()
         loadingView = nil
         let deliver = {
+            (self.controller as? HXMediaPickerController)?.restoreHostStatusBarStyle()
             self.controller = nil
             self.release?()
             self.release = nil

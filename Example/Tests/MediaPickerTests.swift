@@ -353,18 +353,120 @@ final class MediaPickerTests: XCTestCase {
     func testAutomaticLightAndDarkThemeConfiguration() {
         let options = HXMediaPickerOptions()
         options.themeColor = .systemOrange
-        options.appearance = .automatic
-        XCTAssertEqual(HXMediaPickerConfiguration.picker(options).appearanceStyle, .varied)
-        options.appearance = .light
-        XCTAssertEqual(HXMediaPickerConfiguration.picker(options).appearanceStyle, .normal)
-        options.appearance = .dark
-        let dark = HXMediaPickerConfiguration.picker(options)
-        XCTAssertEqual(dark.appearanceStyle, .dark)
-        XCTAssertEqual(dark.themeColor, .systemOrange)
-        XCTAssertEqual(dark.photoList.bottomView.finishButtonDarkBackgroundColor, .systemOrange)
-        XCTAssertEqual(dark.previewView.bottomView.finishButtonDarkBackgroundColor, .systemOrange)
-        XCTAssertTrue(dark.photoList.photoToolbar == PhotoToolBarView.self)
-        XCTAssertTrue(dark.previewView.photoToolbar == PhotoToolBarView.self)
+        let appearances: [(HXMediaPickerAppearance, AppearanceStyle)] = [
+            (.automatic, .varied), (.light, .normal), (.dark, .dark)
+        ]
+        for (appearance, style) in appearances {
+            options.appearance = appearance
+            let config = HXMediaPickerConfiguration.picker(options)
+            XCTAssertEqual(config.appearanceStyle, style)
+            XCTAssertEqual(config.themeColor, .systemOrange)
+            XCTAssertEqual(config.photoList.backgroundColor, .white)
+            XCTAssertEqual(config.photoList.backgroundDarkColor, .black)
+            XCTAssertEqual(config.photoList.bottomView.previewButtonTitleColor, .black)
+            XCTAssertEqual(config.photoList.bottomView.previewButtonTitleDarkColor, .white)
+            XCTAssertEqual(config.photoList.bottomView.backgroundColor, UIColor(white: 247.0 / 255, alpha: 1))
+            XCTAssertEqual(config.photoList.bottomView.backgroundDarkColor, UIColor(white: 30.0 / 255, alpha: 1))
+            for toolbar in [config.photoList.bottomView, config.previewView.bottomView] {
+                XCTAssertEqual(toolbar.finishButtonBackgroundColor, .systemOrange)
+                XCTAssertEqual(toolbar.finishButtonDarkBackgroundColor, .systemOrange)
+            }
+            XCTAssertTrue(config.photoList.photoToolbar == PhotoToolBarView.self)
+            XCTAssertTrue(config.previewView.photoToolbar == PhotoToolBarView.self)
+        }
+    }
+
+    func testLibraryOptionsFollowGlobalAppearanceWithoutChangingCameraDefaults() {
+        let savedAppearance = HXMediaPicker.defaultAppearance
+        defer { HXMediaPicker.defaultAppearance = savedAppearance }
+        XCTAssertEqual(savedAppearance, .automatic)
+        let options = HXMediaPickerOptions()
+        let appearances: [(HXMediaPickerAppearance, AppearanceStyle)] = [
+            (.automatic, .varied), (.light, .normal), (.dark, .dark)
+        ]
+        for (appearance, style) in appearances {
+            HXMediaPicker.defaultAppearance = appearance
+            // Options may be created before the host sets its application-wide policy.
+            XCTAssertEqual(options.appearance, appearance)
+            XCTAssertEqual(HXMediaPickerOptions().appearance, appearance)
+            XCTAssertEqual(HXMediaPickerConfiguration.picker(options).appearanceStyle, style)
+            options.source = .camera
+            XCTAssertEqual(options.appearance, .automatic)
+            options.source = .library
+            XCTAssertEqual(options.appearance, appearance)
+        }
+    }
+
+    func testExplicitAppearanceOverridesEveryGlobalModeForLibraryAndCamera() {
+        let savedAppearance = HXMediaPicker.defaultAppearance
+        defer { HXMediaPicker.defaultAppearance = savedAppearance }
+        let appearances: [(HXMediaPickerAppearance, AppearanceStyle)] = [
+            (.automatic, .varied), (.light, .normal), (.dark, .dark)
+        ]
+        for (explicit, style) in appearances {
+            let options = HXMediaPickerOptions()
+            options.appearance = explicit
+            for (global, _) in appearances {
+                HXMediaPicker.defaultAppearance = global
+                for source: HXMediaPickerSource in [.library, .camera] {
+                    options.source = source
+                    XCTAssertEqual(options.appearance, explicit,
+                                   "An explicit automatic value must also override the host default")
+                    if source == .library {
+                        XCTAssertEqual(HXMediaPickerConfiguration.picker(options).appearanceStyle, style)
+                    }
+                }
+            }
+        }
+    }
+
+    func testPreviewStaysBlackWithReadableControlsInEveryGlobalAppearance() {
+        let savedAppearance = HXMediaPicker.defaultAppearance
+        defer { HXMediaPicker.defaultAppearance = savedAppearance }
+        let options = HXMediaPickerOptions()
+        options.allowsEditing = true
+        let green = UIColor(red: 7.0 / 255, green: 193.0 / 255, blue: 96.0 / 255, alpha: 1)
+        for appearance: HXMediaPickerAppearance in [.automatic, .light, .dark] {
+            HXMediaPicker.defaultAppearance = appearance
+            let config = HXMediaPickerConfiguration.picker(options)
+            let preview = config.previewView
+            XCTAssertEqual(preview.backgroundColor, .black)
+            XCTAssertEqual(preview.backgroundDarkColor, .black)
+            XCTAssertEqual(preview.statusBarHiddenBgColor, .black)
+            let toolbar = preview.bottomView
+            XCTAssertEqual(toolbar.barStyle, .black)
+            XCTAssertEqual(toolbar.barDarkStyle, .black)
+            for color in [toolbar.previewButtonTitleColor, toolbar.previewButtonTitleDarkColor,
+                          toolbar.originalButtonTitleColor, toolbar.originalButtonTitleDarkColor,
+                          toolbar.editButtonTitleColor, toolbar.editButtonTitleDarkColor,
+                          toolbar.finishButtonTitleColor, toolbar.finishButtonTitleDarkColor] {
+                XCTAssertEqual(color, .white)
+            }
+            XCTAssertFalse(toolbar.isHiddenEditButton)
+            XCTAssertEqual(toolbar.finishButtonBackgroundColor, green)
+            XCTAssertEqual(toolbar.finishButtonDarkBackgroundColor, green)
+            XCTAssertEqual(toolbar.finishButtonDisableTitleColor, UIColor.white.withAlphaComponent(0.4))
+            XCTAssertEqual(toolbar.finishButtonDisableTitleDarkColor, UIColor.white.withAlphaComponent(0.4))
+            XCTAssertEqual(toolbar.finishButtonDisableBackgroundColor, UIColor(white: 0.4, alpha: 0.3))
+            XCTAssertEqual(toolbar.finishButtonDisableDarkBackgroundColor, UIColor(white: 0.4, alpha: 0.3))
+            XCTAssertEqual(preview.livePhotoMark.blurStyle, .dark)
+            XCTAssertEqual(preview.livePhotoMark.blurDarkStyle, .dark)
+            XCTAssertEqual(preview.HDRMark.blurStyle, .dark)
+            XCTAssertEqual(preview.HDRMark.blurDarkStyle, .dark)
+            for color in [preview.livePhotoMark.imageColor, preview.livePhotoMark.imageDarkColor,
+                          preview.livePhotoMark.textColor, preview.livePhotoMark.textDarkColor,
+                          preview.livePhotoMark.mutedImageColor, preview.livePhotoMark.mutedImageDarkColor,
+                          preview.HDRMark.imageColor, preview.HDRMark.imageDarkColor] {
+                // The upstream preset creates RGB white; compare channels so a
+                // grayscale UIColor.white representation is equivalent.
+                var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+                XCTAssertTrue(color.getRed(&red, green: &green, blue: &blue, alpha: &alpha))
+                XCTAssertEqual(red, 1, accuracy: 0.001)
+                XCTAssertEqual(green, 1, accuracy: 0.001)
+                XCTAssertEqual(blue, 1, accuracy: 0.001)
+                XCTAssertEqual(alpha, 1, accuracy: 0.001)
+            }
+        }
     }
 
     func testReturningFromPreviewDoesNotWriteIntoAnAbsentSelectedStrip() throws {

@@ -13,6 +13,7 @@
 		6D9455CE7C43437606D25439 /* PickerCancelNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247D1E5A6A76A76449168E3 /* PickerCancelNavigationTests.swift */; };
 		86B9F560E82DD9630048B36F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F20A3945252BB539B152959A /* Foundation.framework */; };
 		A1927EC3F6E992175AD2FA32 /* Pods_MediaPickerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC875D2C8494C3CF82B3CD6F /* Pods_MediaPickerTests.framework */; };
+		C2B141254FF6131ED76C13B2 /* PreviewAppearanceLifecycleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F855A9EB9AB09647421C3 /* PreviewAppearanceLifecycleTests.swift */; };
 		C589CAAC7DA922A2E3634C25 /* ObjCBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FDF5C58B16C0183C1B4E02F4 /* ObjCBridgeTests.m */; };
 		CDCAEBC84BA6DB5BB640EE78 /* LegacyCropEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595A21B260B1BFCE30FD6456 /* LegacyCropEditorTests.swift */; };
 		FD4D38E30834B236E9D96390 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C1EC2C94C39A7B4DC4F5EDB7 /* main.m */; };
@@ -35,8 +36,10 @@
 		5B568DBFA3E962273B11A97A /* Pods-HXMediaPickerHarness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HXMediaPickerHarness.release.xcconfig"; path = "Target Support Files/Pods-HXMediaPickerHarness/Pods-HXMediaPickerHarness.release.xcconfig"; sourceTree = "<group>"; };
 		686FCE322AB5C4BC4E4BCAE7 /* HXMediaPickerHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HXMediaPickerHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96B20CEDEF8241FDC4CE4ECF /* MediaPickerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MediaPickerTests.swift; sourceTree = "<group>"; };
+		A94F855A9EB9AB09647421C3 /* PreviewAppearanceLifecycleTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PreviewAppearanceLifecycleTests.swift; sourceTree = "<group>"; };
 		AC0677A378433AA83DD37759 /* Pods-MediaPickerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaPickerTests.debug.xcconfig"; path = "Target Support Files/Pods-MediaPickerTests/Pods-MediaPickerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AFC306544790EFFB9EDE24EE /* Pods-MediaPickerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaPickerTests.release.xcconfig"; path = "Target Support Files/Pods-MediaPickerTests/Pods-MediaPickerTests.release.xcconfig"; sourceTree = "<group>"; };
+		C1815A5BBED52DE814B53BD9 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C1EC2C94C39A7B4DC4F5EDB7 /* main.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DC875D2C8494C3CF82B3CD6F /* Pods_MediaPickerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MediaPickerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F38025BDDAE0FC36D50887 /* MediaPickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MediaPickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				C1EC2C94C39A7B4DC4F5EDB7 /* main.m */,
+				C1815A5BBED52DE814B53BD9 /* Info.plist */,
 			);
 			name = App;
 			path = App;
@@ -115,6 +119,7 @@
 				4247D1E5A6A76A76449168E3 /* PickerCancelNavigationTests.swift */,
 				595A21B260B1BFCE30FD6456 /* LegacyCropEditorTests.swift */,
 				FDF5C58B16C0183C1B4E02F4 /* ObjCBridgeTests.m */,
+				A94F855A9EB9AB09647421C3 /* PreviewAppearanceLifecycleTests.swift */,
 			);
 			name = Tests;
 			path = Tests;
@@ -310,6 +315,7 @@
 				6D9455CE7C43437606D25439 /* PickerCancelNavigationTests.swift in Sources */,
 				CDCAEBC84BA6DB5BB640EE78 /* LegacyCropEditorTests.swift in Sources */,
 				C589CAAC7DA922A2E3634C25 /* ObjCBridgeTests.m in Sources */,
+				C2B141254FF6131ED76C13B2 /* PreviewAppearanceLifecycleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +456,7 @@
 				CODE_SIGNING_ALLOWED = NO;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "用于测试相机组件。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "用于测试录制视频。";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "用于测试照片保存。";
@@ -511,6 +518,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "用于测试相机组件。";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "用于测试录制视频。";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "用于测试照片保存。";

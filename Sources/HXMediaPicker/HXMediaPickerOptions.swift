@@ -27,8 +27,14 @@ import HXPhotoPicker
     public var maximumVideoFileSize: Int = 0
     /// CGSizeZero preserves the original/edited image resolution.
     public var imageTargetSize: CGSize = .zero
+    private var appearanceOverride: HXMediaPickerAppearance?
+    /// Library selection uses HXMediaPicker.defaultAppearance unless overridden.
     /// Automatic follows the presenting application's effective appearance.
-    public var appearance: HXMediaPickerAppearance = .automatic
+    /// Standalone camera appearance is unaffected by the library-wide default.
+    public var appearance: HXMediaPickerAppearance {
+        get { appearanceOverride ?? (source == .library ? HXMediaPicker.defaultAppearance : .automatic) }
+        set { appearanceOverride = newValue }
+    }
     /// WeChat green (#07C160); callers can still override the selected-state accent.
     public var themeColor = UIColor(red: 7.0 / 255, green: 193.0 / 255, blue: 96.0 / 255, alpha: 1)
     public var willPresent: (() -> Void)?
@@ -122,7 +128,15 @@ enum HXMediaPickerConfiguration {
         config.photoList.photoToolbar = PhotoToolBarView.self
         config.previewView.photoToolbar = PhotoToolBarView.self
         applyNeutralPalette(to: &config.photoList.bottomView)
-        applyNeutralPalette(to: &config.previewView.bottomView)
+        // themeColor also recolors labels. Keep the Moments preview dark with
+        // white controls, independently of the library grid's chosen appearance.
+        config.previewView.bottomView.previewButtonTitleColor = .white
+        config.previewView.bottomView.originalButtonTitleColor = .white
+        config.previewView.bottomView.editButtonTitleColor = .white
+        config.previewView.bottomView.originalSelectBox.borderColor = .white
+        let disabledBackground = UIColor(white: 0.4, alpha: 0.3)
+        config.previewView.bottomView.finishButtonDisableBackgroundColor = disabledBackground
+        config.previewView.bottomView.finishButtonDisableDarkBackgroundColor = disabledBackground
         return config
     }
 
@@ -147,10 +161,6 @@ enum HXMediaPickerConfiguration {
         config.photoList.assetNumber = adaptive.photoList.assetNumber
         config.photoList.emptyView = adaptive.photoList.emptyView
         config.photoList.bottomView = adaptive.photoList.bottomView
-        config.previewView.backgroundColor = adaptive.previewView.backgroundColor
-        config.previewView.livePhotoMark = adaptive.previewView.livePhotoMark
-        config.previewView.HDRMark = adaptive.previewView.HDRMark
-        config.previewView.bottomView = adaptive.previewView.bottomView
         config.notAuthorized = adaptive.notAuthorized
     }
 
