@@ -1,0 +1,562 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A95D5674FC35435296619D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F20A3945252BB539B152959A /* Foundation.framework */; };
+		0B9C6F6E90332C62C5F375E6 /* Pods_HXMediaPickerHarness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2D9C8FAE00C7C23ECCC0683 /* Pods_HXMediaPickerHarness.framework */; };
+		5EC1B4E5AF318CE9CBE07173 /* MediaPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B20CEDEF8241FDC4CE4ECF /* MediaPickerTests.swift */; };
+		6D9455CE7C43437606D25439 /* PickerCancelNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247D1E5A6A76A76449168E3 /* PickerCancelNavigationTests.swift */; };
+		86B9F560E82DD9630048B36F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F20A3945252BB539B152959A /* Foundation.framework */; };
+		A1927EC3F6E992175AD2FA32 /* Pods_MediaPickerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC875D2C8494C3CF82B3CD6F /* Pods_MediaPickerTests.framework */; };
+		C589CAAC7DA922A2E3634C25 /* ObjCBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FDF5C58B16C0183C1B4E02F4 /* ObjCBridgeTests.m */; };
+		CDCAEBC84BA6DB5BB640EE78 /* LegacyCropEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595A21B260B1BFCE30FD6456 /* LegacyCropEditorTests.swift */; };
+		FD4D38E30834B236E9D96390 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C1EC2C94C39A7B4DC4F5EDB7 /* main.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4063EA179C95F8C9959C1A9E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F85362E036EDD6BC54313CC4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A8073CBF6D11C8643A82E07;
+			remoteInfo = HXMediaPickerHarness;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4247D1E5A6A76A76449168E3 /* PickerCancelNavigationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PickerCancelNavigationTests.swift; sourceTree = "<group>"; };
+		587708FD0ECF7BAF5A8E7FE5 /* Pods-HXMediaPickerHarness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HXMediaPickerHarness.debug.xcconfig"; path = "Target Support Files/Pods-HXMediaPickerHarness/Pods-HXMediaPickerHarness.debug.xcconfig"; sourceTree = "<group>"; };
+		595A21B260B1BFCE30FD6456 /* LegacyCropEditorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LegacyCropEditorTests.swift; sourceTree = "<group>"; };
+		5B568DBFA3E962273B11A97A /* Pods-HXMediaPickerHarness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HXMediaPickerHarness.release.xcconfig"; path = "Target Support Files/Pods-HXMediaPickerHarness/Pods-HXMediaPickerHarness.release.xcconfig"; sourceTree = "<group>"; };
+		686FCE322AB5C4BC4E4BCAE7 /* HXMediaPickerHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HXMediaPickerHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		96B20CEDEF8241FDC4CE4ECF /* MediaPickerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MediaPickerTests.swift; sourceTree = "<group>"; };
+		AC0677A378433AA83DD37759 /* Pods-MediaPickerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaPickerTests.debug.xcconfig"; path = "Target Support Files/Pods-MediaPickerTests/Pods-MediaPickerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AFC306544790EFFB9EDE24EE /* Pods-MediaPickerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaPickerTests.release.xcconfig"; path = "Target Support Files/Pods-MediaPickerTests/Pods-MediaPickerTests.release.xcconfig"; sourceTree = "<group>"; };
+		C1EC2C94C39A7B4DC4F5EDB7 /* main.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DC875D2C8494C3CF82B3CD6F /* Pods_MediaPickerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MediaPickerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0F38025BDDAE0FC36D50887 /* MediaPickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MediaPickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2D9C8FAE00C7C23ECCC0683 /* Pods_HXMediaPickerHarness.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HXMediaPickerHarness.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F20A3945252BB539B152959A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		FDF5C58B16C0183C1B4E02F4 /* ObjCBridgeTests.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ObjCBridgeTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		414B6F33D17B8B1A2F6632F9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86B9F560E82DD9630048B36F /* Foundation.framework in Frameworks */,
+				A1927EC3F6E992175AD2FA32 /* Pods_MediaPickerTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9B3CD3FE3258E1F8020E299 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A95D5674FC35435296619D1 /* Foundation.framework in Frameworks */,
+				0B9C6F6E90332C62C5F375E6 /* Pods_HXMediaPickerHarness.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2225F3EEDC4AF78B06E44859 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5B568DBFA3E962273B11A97A /* Pods-HXMediaPickerHarness.release.xcconfig */,
+				587708FD0ECF7BAF5A8E7FE5 /* Pods-HXMediaPickerHarness.debug.xcconfig */,
+				AFC306544790EFFB9EDE24EE /* Pods-MediaPickerTests.release.xcconfig */,
+				AC0677A378433AA83DD37759 /* Pods-MediaPickerTests.debug.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		2C39147D2F1B8A62324A7A02 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				C1EC2C94C39A7B4DC4F5EDB7 /* main.m */,
+			);
+			name = App;
+			path = App;
+			sourceTree = "<group>";
+		};
+		3A21CEF46D0E2BA9ECFCD107 = {
+			isa = PBXGroup;
+			children = (
+				644A2811D0E31C783342C7D3 /* Products */,
+				C68A615D5761CB382CFEA1E8 /* Frameworks */,
+				2C39147D2F1B8A62324A7A02 /* App */,
+				98581CE50421FFDE2F593FA3 /* Tests */,
+				2225F3EEDC4AF78B06E44859 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		644A2811D0E31C783342C7D3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				686FCE322AB5C4BC4E4BCAE7 /* HXMediaPickerHarness.app */,
+				E0F38025BDDAE0FC36D50887 /* MediaPickerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		98581CE50421FFDE2F593FA3 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				96B20CEDEF8241FDC4CE4ECF /* MediaPickerTests.swift */,
+				4247D1E5A6A76A76449168E3 /* PickerCancelNavigationTests.swift */,
+				595A21B260B1BFCE30FD6456 /* LegacyCropEditorTests.swift */,
+				FDF5C58B16C0183C1B4E02F4 /* ObjCBridgeTests.m */,
+			);
+			name = Tests;
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		C68A615D5761CB382CFEA1E8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F631B8830C8229A45EE246B5 /* iOS */,
+				E2D9C8FAE00C7C23ECCC0683 /* Pods_HXMediaPickerHarness.framework */,
+				DC875D2C8494C3CF82B3CD6F /* Pods_MediaPickerTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F631B8830C8229A45EE246B5 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				F20A3945252BB539B152959A /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2D6A35DFDE89D1058301D4B5 /* MediaPickerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0C47DF4F92F949AB783EA87F /* Build configuration list for PBXNativeTarget "MediaPickerTests" */;
+			buildPhases = (
+				85286697A11A7668BF49A06C /* [CP] Check Pods Manifest.lock */,
+				F7F732B9677DB92BA76F928D /* Sources */,
+				414B6F33D17B8B1A2F6632F9 /* Frameworks */,
+				3CBB0D26EC5D3D1D11E5698C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F4DBF199BA3D16C6E5C01A94 /* PBXTargetDependency */,
+			);
+			name = MediaPickerTests;
+			productName = MediaPickerTests;
+			productReference = E0F38025BDDAE0FC36D50887 /* MediaPickerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9A8073CBF6D11C8643A82E07 /* HXMediaPickerHarness */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 257AB81F49E9322B1A5058C3 /* Build configuration list for PBXNativeTarget "HXMediaPickerHarness" */;
+			buildPhases = (
+				030A2B12F852F74F33990775 /* [CP] Check Pods Manifest.lock */,
+				03139AE27FCEE76D99F7143F /* Sources */,
+				A9B3CD3FE3258E1F8020E299 /* Frameworks */,
+				377B99C68B08D1ACBF1BAD64 /* Resources */,
+				961FC32406E4805E83BED9FD /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HXMediaPickerHarness;
+			productName = HXMediaPickerHarness;
+			productReference = 686FCE322AB5C4BC4E4BCAE7 /* HXMediaPickerHarness.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F85362E036EDD6BC54313CC4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 022609EC091F06DFE16C76EB /* Build configuration list for PBXProject "HXMediaPickerHarness" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3A21CEF46D0E2BA9ECFCD107;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 100;
+			productRefGroup = 644A2811D0E31C783342C7D3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9A8073CBF6D11C8643A82E07 /* HXMediaPickerHarness */,
+				2D6A35DFDE89D1058301D4B5 /* MediaPickerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		377B99C68B08D1ACBF1BAD64 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3CBB0D26EC5D3D1D11E5698C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		030A2B12F852F74F33990775 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HXMediaPickerHarness-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		85286697A11A7668BF49A06C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MediaPickerTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		961FC32406E4805E83BED9FD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HXMediaPickerHarness/Pods-HXMediaPickerHarness-resources.sh",
+				"${PODS_ROOT}/HXPhotoPicker/Sources/HXPhotoPicker/Resources/HXPhotoPicker.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/HXPhotoPicker/HXPhotoPicker_Privacy.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HXPhotoPicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HXPhotoPicker_Privacy.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HXMediaPickerHarness/Pods-HXMediaPickerHarness-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03139AE27FCEE76D99F7143F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD4D38E30834B236E9D96390 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7F732B9677DB92BA76F928D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5EC1B4E5AF318CE9CBE07173 /* MediaPickerTests.swift in Sources */,
+				6D9455CE7C43437606D25439 /* PickerCancelNavigationTests.swift in Sources */,
+				CDCAEBC84BA6DB5BB640EE78 /* LegacyCropEditorTests.swift in Sources */,
+				C589CAAC7DA922A2E3634C25 /* ObjCBridgeTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F4DBF199BA3D16C6E5C01A94 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HXMediaPickerHarness;
+			target = 9A8073CBF6D11C8643A82E07 /* HXMediaPickerHarness */;
+			targetProxy = 4063EA179C95F8C9959C1A9E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2DD0CCD285BF2AEAEEF97920 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		42F799AD73E616E6E9C4019B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		454D5DC8CBCFA36BFAAE8F10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 587708FD0ECF7BAF5A8E7FE5 /* Pods-HXMediaPickerHarness.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "用于测试相机组件。";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "用于测试录制视频。";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "用于测试照片保存。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用于测试相册选择组件。";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.wowbby.hxmediapicker.tests.HXMediaPickerHarness;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5D24AE20DE98DE6EEA4163E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFC306544790EFFB9EDE24EE /* Pods-MediaPickerTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.wowbby.hxmediapicker.tests.MediaPickerTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HXMediaPickerHarness.app/HXMediaPickerHarness";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9AF8E44EC6D5704399CFC796 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC0677A378433AA83DD37759 /* Pods-MediaPickerTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.wowbby.hxmediapicker.tests.MediaPickerTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HXMediaPickerHarness.app/HXMediaPickerHarness";
+			};
+			name = Debug;
+		};
+		F4221433BE0F1202F0AAC0C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5B568DBFA3E962273B11A97A /* Pods-HXMediaPickerHarness.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "用于测试相机组件。";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "用于测试录制视频。";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "用于测试照片保存。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用于测试相册选择组件。";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.wowbby.hxmediapicker.tests.HXMediaPickerHarness;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		022609EC091F06DFE16C76EB /* Build configuration list for PBXProject "HXMediaPickerHarness" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DD0CCD285BF2AEAEEF97920 /* Debug */,
+				42F799AD73E616E6E9C4019B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0C47DF4F92F949AB783EA87F /* Build configuration list for PBXNativeTarget "MediaPickerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D24AE20DE98DE6EEA4163E4 /* Release */,
+				9AF8E44EC6D5704399CFC796 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		257AB81F49E9322B1A5058C3 /* Build configuration list for PBXNativeTarget "HXMediaPickerHarness" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4221433BE0F1202F0AAC0C9 /* Release */,
+				454D5DC8CBCFA36BFAAE8F10 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F85362E036EDD6BC54313CC4 /* Project object */;
+}

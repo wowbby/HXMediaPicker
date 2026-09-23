@@ -1,0 +1,9 @@
+# Local Xcode/CocoaPods build products
+.DS_Store
+Pods/
+DerivedData*/
+build/
+*.xcresult/
+*.log
+xcuserdata/
+*.xcuserstate

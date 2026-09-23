@@ -1,0 +1,49 @@
+PODS:
+  - HXMediaPicker (1.0.0):
+    - HXPhotoPicker (= 5.0.6)
+  - HXPhotoPicker (5.0.6):
+    - HXPhotoPicker/Default (= 5.0.6)
+  - HXPhotoPicker/Camera (5.0.6):
+    - HXPhotoPicker/Camera/Lite (= 5.0.6)
+    - HXPhotoPicker/Camera/Location (= 5.0.6)
+  - HXPhotoPicker/Camera/Lite (5.0.6):
+    - HXPhotoPicker/Core
+  - HXPhotoPicker/Camera/Location (5.0.6):
+    - HXPhotoPicker/Camera/Lite
+  - HXPhotoPicker/Core (5.0.6):
+    - HXPhotoPicker/Resources
+  - HXPhotoPicker/Default (5.0.6):
+    - HXPhotoPicker/Camera
+    - HXPhotoPicker/Editor
+    - HXPhotoPicker/Picker
+  - HXPhotoPicker/Editor (5.0.6):
+    - HXPhotoPicker/EditorView
+  - HXPhotoPicker/EditorView (5.0.6):
+    - HXPhotoPicker/Core
+  - HXPhotoPicker/Picker (5.0.6):
+    - HXPhotoPicker/Core
+  - HXPhotoPicker/Resources (5.0.6)
+
+DEPENDENCIES:
+  - HXMediaPicker (from `..`)
+  - HXPhotoPicker (from `https://github.com/wowbby/HXPhotoPicker.git`, tag `5.0.6`)
+
+EXTERNAL SOURCES:
+  HXMediaPicker:
+    :path: ".."
+  HXPhotoPicker:
+    :git: https://github.com/wowbby/HXPhotoPicker.git
+    :tag: 5.0.6
+
+CHECKOUT OPTIONS:
+  HXPhotoPicker:
+    :git: https://github.com/wowbby/HXPhotoPicker.git
+    :tag: 5.0.6
+
+SPEC CHECKSUMS:
+  HXMediaPicker: 951b4fe41b81cb7089697a56d4ad7bf161cf2957
+  HXPhotoPicker: 3abfbb0b48e39e7278851733f2d88f2b690cd52a
+
+PODFILE CHECKSUM: b28cbd726282477ff254b397e76594fdd071a53d
+
+COCOAPODS: 1.17.0

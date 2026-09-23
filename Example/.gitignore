@@ -1,0 +1,7 @@
+Pods/
+build/
+DerivedData/
+DerivedData-device/
+*.xcresult/
+*.log
+xcuserdata/
