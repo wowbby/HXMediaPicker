@@ -14,7 +14,7 @@ pod install
 
 ```ruby
 pod 'HXMediaPicker', :path => '..'
-pod 'HXPhotoPicker', :git => 'https://github.com/wowbby/HXPhotoPicker.git', :tag => '5.0.6'
+pod 'HXPhotoPicker', :git => 'https://github.com/wowbby/HXPhotoPicker.git', :tag => '5.0.7'
 ```
 
 首次安装需要能够访问公开 Git 仓库。不要将该依赖改为官方 HXPhotoPicker `5.0.5`，该版本缺少适配层使用的扩展配置。

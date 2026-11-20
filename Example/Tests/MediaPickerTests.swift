@@ -524,7 +524,10 @@ final class MediaPickerTests: XCTestCase {
                                width: rootView.bounds.width, height: toolbar.viewHeight)
         toolbar.setNeedsLayout()
         toolbar.layoutIfNeeded()
-        XCTAssertEqual(toolbar.toolbarHeight, 50 + window.safeAreaInsets.bottom, accuracy: 0.5)
+        XCTAssertEqual(toolbar.toolbarHeight, 56 + window.safeAreaInsets.bottom, accuracy: 0.5)
+        config.photoList.bottomView.isShowOriginalFileSize = false
+        let singleRowToolbar = PhotoToolBarView(config, type: .picker)
+        XCTAssertEqual(singleRowToolbar.toolbarHeight, 50 + window.safeAreaInsets.bottom, accuracy: 0.5)
         func buttons(in view: UIView) -> [UIButton] {
             view.subviews.flatMap { child -> [UIButton] in
                 guard !child.isHidden else { return [] }

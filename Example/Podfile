@@ -3,7 +3,7 @@ use_frameworks! :linkage => :static
 
 target 'HXMediaPickerHarness' do
   pod 'HXMediaPicker', :path => '..'
-  pod 'HXPhotoPicker', :git => 'https://github.com/wowbby/HXPhotoPicker.git', :tag => '5.0.6'
+  pod 'HXPhotoPicker', :git => 'https://github.com/wowbby/HXPhotoPicker.git', :tag => '5.0.7'
 
   target 'MediaPickerTests' do
     inherit! :search_paths

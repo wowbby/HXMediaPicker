@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'HXMediaPicker'
-  s.version = '1.0.2'
+  s.version = '1.0.3'
   s.summary = 'Objective-C media selection bridge with classic crop controls for HXPhotoPicker.'
   s.homepage = 'https://github.com/wowbby/HXMediaPicker'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
@@ -11,5 +11,5 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.source_files = 'Sources/HXMediaPicker/**/*.swift'
   s.frameworks = 'UIKit', 'Photos', 'AVFoundation'
-  s.dependency 'HXPhotoPicker', '= 5.0.6'
+  s.dependency 'HXPhotoPicker', '= 5.0.7'
 end

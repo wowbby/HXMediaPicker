@@ -1,49 +1,49 @@
 PODS:
-  - HXMediaPicker (1.0.2):
-    - HXPhotoPicker (= 5.0.6)
-  - HXPhotoPicker (5.0.6):
-    - HXPhotoPicker/Default (= 5.0.6)
-  - HXPhotoPicker/Camera (5.0.6):
-    - HXPhotoPicker/Camera/Lite (= 5.0.6)
-    - HXPhotoPicker/Camera/Location (= 5.0.6)
-  - HXPhotoPicker/Camera/Lite (5.0.6):
+  - HXMediaPicker (1.0.3):
+    - HXPhotoPicker (= 5.0.7)
+  - HXPhotoPicker (5.0.7):
+    - HXPhotoPicker/Default (= 5.0.7)
+  - HXPhotoPicker/Camera (5.0.7):
+    - HXPhotoPicker/Camera/Lite (= 5.0.7)
+    - HXPhotoPicker/Camera/Location (= 5.0.7)
+  - HXPhotoPicker/Camera/Lite (5.0.7):
     - HXPhotoPicker/Core
-  - HXPhotoPicker/Camera/Location (5.0.6):
+  - HXPhotoPicker/Camera/Location (5.0.7):
     - HXPhotoPicker/Camera/Lite
-  - HXPhotoPicker/Core (5.0.6):
+  - HXPhotoPicker/Core (5.0.7):
     - HXPhotoPicker/Resources
-  - HXPhotoPicker/Default (5.0.6):
+  - HXPhotoPicker/Default (5.0.7):
     - HXPhotoPicker/Camera
     - HXPhotoPicker/Editor
     - HXPhotoPicker/Picker
-  - HXPhotoPicker/Editor (5.0.6):
+  - HXPhotoPicker/Editor (5.0.7):
     - HXPhotoPicker/EditorView
-  - HXPhotoPicker/EditorView (5.0.6):
+  - HXPhotoPicker/EditorView (5.0.7):
     - HXPhotoPicker/Core
-  - HXPhotoPicker/Picker (5.0.6):
+  - HXPhotoPicker/Picker (5.0.7):
     - HXPhotoPicker/Core
-  - HXPhotoPicker/Resources (5.0.6)
+  - HXPhotoPicker/Resources (5.0.7)
 
 DEPENDENCIES:
   - HXMediaPicker (from `..`)
-  - HXPhotoPicker (from `https://github.com/wowbby/HXPhotoPicker.git`, tag `5.0.6`)
+  - HXPhotoPicker (from `https://github.com/wowbby/HXPhotoPicker.git`, tag `5.0.7`)
 
 EXTERNAL SOURCES:
   HXMediaPicker:
     :path: ".."
   HXPhotoPicker:
     :git: https://github.com/wowbby/HXPhotoPicker.git
-    :tag: 5.0.6
+    :tag: 5.0.7
 
 CHECKOUT OPTIONS:
   HXPhotoPicker:
     :git: https://github.com/wowbby/HXPhotoPicker.git
-    :tag: 5.0.6
+    :tag: 5.0.7
 
 SPEC CHECKSUMS:
-  HXMediaPicker: 9a52188725cfc2f2c39f27084964379d30df6ec6
-  HXPhotoPicker: 3abfbb0b48e39e7278851733f2d88f2b690cd52a
+  HXMediaPicker: e3a4f275bf62f27d38630db6d103d498826ea834
+  HXPhotoPicker: c037ca8999b6ed88346bab1f78392a9aecb2de20
 
-PODFILE CHECKSUM: b28cbd726282477ff254b397e76594fdd071a53d
+PODFILE CHECKSUM: 6a2d290eceb70da03ed4a137f04fd8290fbb6ed5
 
 COCOAPODS: 1.17.0
