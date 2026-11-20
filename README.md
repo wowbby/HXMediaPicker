@@ -12,14 +12,14 @@ HXMediaPicker 是基于 [HXPhotoPicker](https://github.com/wowbby/HXPhotoPicker)
 use_frameworks! :linkage => :static
 
 target 'YourApp' do
-  pod 'HXPhotoPicker', :git => 'https://github.com/wowbby/HXPhotoPicker.git', :tag => '5.0.6'
-  pod 'HXMediaPicker', :git => 'https://github.com/wowbby/HXMediaPicker.git', :tag => '1.0.2'
+  pod 'HXPhotoPicker', :git => 'https://github.com/wowbby/HXPhotoPicker.git', :tag => '5.0.7'
+  pod 'HXMediaPicker', :git => 'https://github.com/wowbby/HXMediaPicker.git', :tag => '1.0.3'
 end
 ```
 
 然后运行 `pod install`，使用生成的 `.xcworkspace` 打开工程。
 
-HXMediaPicker `1.0.2` 依赖上述 HXPhotoPicker fork 的 `5.0.6`。该版本提供经典裁剪布局、普通导航控件和预览切换所需的扩展配置。官方 HXPhotoPicker `5.0.5` 缺少这些接口，不能直接替换；仅写 `pod 'HXMediaPicker'` 也无法从 Trunk 安装当前版本。
+HXMediaPicker `1.0.3` 依赖上述 HXPhotoPicker fork 的 `5.0.7`。该版本提供经典裁剪布局、普通导航控件和预览切换所需的扩展配置。官方 HXPhotoPicker `5.0.5` 缺少这些接口，不能直接替换；仅写 `pod 'HXMediaPicker'` 也无法从 Trunk 安装当前版本。
 
 ## Objective-C 调用
 
